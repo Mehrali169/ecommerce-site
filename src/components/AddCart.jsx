@@ -18,20 +18,21 @@ import {
 import { ApiContext } from "./Store";
 import { BiArrowBack } from "react-icons/bi";
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ecommerce from "../assets/ecommerce.jpg";
 
 const AddCart = () => {
+  const navigate = useNavigate();
   let totalPrice = 0;
   const { cart, setCart, userDetails, setUserDetails } = useContext(ApiContext);
   cart?.forEach((item) => {
     totalPrice += item.price * item.totalQuantity;
   });
 
-  const clicked = () => {
-    setCart([]);
-    // console.log(userDetails);
-  };
+  // const clicked = () => {
+  //   setCart([]);
+  //   // console.log(userDetails);
+  // };
 
   const handleChange = (e) => {
     setUserDetails({ ...userDetails, [e.target.name]: e.target.value });
@@ -40,7 +41,9 @@ const AddCart = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log("abc");
+    setCart([]);
+    console.log("abc");
+    navigate("/");
   };
 
   // dialog functions
@@ -180,12 +183,7 @@ const AddCart = () => {
                 width: "fit-content",
               }}
             >
-              <Grid
-                container
-                spacing={10}
-                component="form"
-                onSubmit={handleSubmit}
-              >
+              <Grid container spacing={10}>
                 <Grid item md={6} sm={12} xs={12}>
                   <Box
                     component="img"
@@ -196,7 +194,12 @@ const AddCart = () => {
                   />
                 </Grid>
                 <Grid item md={6} sm={12} xs={12}>
-                  <Box component="form" noValidate autoComplete="off">
+                  <Box
+                    component="form"
+                    noValidate
+                    autoComplete="off"
+                    onSubmit={handleSubmit}
+                  >
                     <Grid container>
                       <Grid item md={6} sm={12}>
                         <Typography sx={{ fontSize: "20px", fontWeight: 500 }}>
@@ -251,26 +254,29 @@ const AddCart = () => {
                           value={userDetails.address}
                           onChange={handleChange}
                         />
-                        <Link to="/">
-                          <Button
-                            // type="submit"
-                            sx={{
+                        {/* <Link to="/"> */}
+                        <Button
+                          type="submit"
+                          // component={Link}
+                          // to="/"
+                          sx={{
+                            background: "green",
+                            color: "white",
+                            textDecoration: "none",
+                            textTransform: "capitalize",
+                            px: 11,
+                            py: 2,
+                            mt: 6,
+                            "&:hover": {
                               background: "green",
                               color: "white",
-                              textTransform: "capitalize",
-                              px: 11,
-                              py: 2,
-                              mt: 6,
-                              "&:hover": {
-                                background: "green",
-                                color: "white",
-                              },
-                            }}
-                            onClick={clicked}
-                          >
-                            Confirm
-                          </Button>
-                        </Link>
+                            },
+                          }}
+                          // onClick={clicked}
+                        >
+                          Confirm
+                        </Button>
+                        {/* </Link> */}
                       </Grid>
                     </Grid>
                   </Box>
